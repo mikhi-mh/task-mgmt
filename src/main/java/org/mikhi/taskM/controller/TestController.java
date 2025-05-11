@@ -11,6 +11,6 @@ public class TestController {
   @GetMapping("/test")
   public String getTasks() {
     return "Hello, World!";
-  } // localhost:8080/v1/tasks
+  }
 
 }
