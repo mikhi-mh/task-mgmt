@@ -1,10 +1,12 @@
 package org.mikhi.taskM.service.impl;
 
+import java.time.LocalDate;
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import org.mikhi.taskM.exception.NoTasksFoundException;
 import org.mikhi.taskM.exception.TaskNotFoundException;
+import org.mikhi.taskM.model.Status;
 import org.mikhi.taskM.model.Task;
 import org.mikhi.taskM.repository.TaskRepository;
 import org.mikhi.taskM.service.TaskService;
@@ -57,5 +59,39 @@ public class TaskServiceImpl implements TaskService {
       throw new NoTasksFoundException("No tasks found in the system");
     }
     return tasks;
+  }
+
+  @Override
+  public List<Task> filterTasks(Status status) {
+    List<Task> tasks = taskRepository.findByStatus(status);
+    if (tasks.isEmpty()) {
+      throw new NoTasksFoundException("No tasks found with status: " + status);
+    }
+    return tasks;
+  }
+
+  @Override
+  public List<Task> filterTasks(LocalDate dueDate) {
+    List<Task> tasks = taskRepository.findByDueDate(dueDate);
+    if (tasks.isEmpty()) {
+      throw new NoTasksFoundException("No tasks found with due date: " + dueDate);
+    }
+    return tasks;
+  }
+
+  @Override
+  public List<Task> filterTasks(Status status, LocalDate dueDate) {
+    List<Task> tasks = taskRepository.findByStatusAndDueDate(status, dueDate);
+    if (tasks.isEmpty()) {
+      throw new NoTasksFoundException(
+          String.format("No tasks found with status: %s and due date: %s", status, dueDate)
+      );
+    }
+    return tasks;
+  }
+
+  @Override
+  public List<Task> getTasksTillDate(LocalDate dueDate) {
+    return taskRepository.findByDueDateLessThanEqual(dueDate);
   }
 }

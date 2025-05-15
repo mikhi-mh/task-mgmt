@@ -1,10 +1,13 @@
 package org.mikhi.taskM.controller;
 
-import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
+import javax.validation.Valid;
 import org.mikhi.taskM.model.ApiResponseDto;
+import org.mikhi.taskM.model.Status;
 import org.mikhi.taskM.model.Task;
 import org.mikhi.taskM.service.TaskService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -77,6 +81,48 @@ public class TaskController {
     List<Task> tasks = taskService.getAllTasks();
     ApiResponseDto<List<Task>> response = new ApiResponseDto<>(
         "Tasks retrieved successfully",
+        tasks,
+        true
+    );
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/filter")
+  public ResponseEntity<ApiResponseDto<List<Task>>> filterTasks(
+      @RequestParam(required = false) Status status,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dueDate) {
+
+    List<Task> filteredTasks;
+    String message;
+
+    if (status != null && dueDate != null) {
+      filteredTasks = taskService.filterTasks(status, dueDate);
+      message = "Tasks filtered by status and due date";
+    } else if (status != null) {
+      filteredTasks = taskService.filterTasks(status);
+      message = "Tasks filtered by status";
+    } else if (dueDate != null) {
+      filteredTasks = taskService.filterTasks(dueDate);
+      message = "Tasks filtered by due date";
+    } else {
+      filteredTasks = taskService.getAllTasks();
+      message = "No filters applied";
+    }
+
+    ApiResponseDto<List<Task>> response = new ApiResponseDto<>(
+        message,
+        filteredTasks,
+        true
+    );
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/till-date")
+  public ResponseEntity<ApiResponseDto<List<Task>>> getTasksTillDate(
+      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dueDate) {
+    List<Task> tasks = taskService.getTasksTillDate(dueDate);
+    ApiResponseDto<List<Task>> response = new ApiResponseDto<>(
+        "Tasks with due date till " + dueDate + " retrieved successfully",
         tasks,
         true
     );
