@@ -1,6 +1,7 @@
 package org.mikhi.taskM.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
@@ -171,5 +172,7 @@ class TaskServiceImplTest {
     when(taskRepository.findByDueDateLessThanEqual(date)).thenReturn(tasks);
     List<Task> result = taskServiceImpl.getTasksTillDate(date);
     assertEquals(1, result.size());
+    tasks.forEach(
+        task -> assertFalse(task.getDueDate().isAfter(date), "Task date should be after date"));
   }
 }
