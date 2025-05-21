@@ -7,6 +7,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.mikhi.taskM.model.Status;
 import org.mikhi.taskM.model.Task;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +23,8 @@ public interface TaskService {
   String deleteTask(@NotNull Long id);
 
   List<Task> getAllTasks();
+
+  Page<Task> getAllTasks(Pageable pageable);
 
   List<Task> filterTasks(Status status);  // Filter by status
 
