@@ -49,13 +49,20 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-  public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatch(Exception ex) {
-    String message = "Invalid date format. Please use yyyy-MM-dd.";
-    ErrorResponse error = new ErrorResponse(
-        HttpStatus.BAD_REQUEST.value(),
-        message
-    );
-    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+  public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
+      String message;
+      if ("direction".equals(ex.getName())) {
+          message = "Invalid sort direction: " + ex.getValue() + ". Allowed values are: asc, desc";
+      } else if ("dueDate".equals(ex.getName())) {
+          message = "Invalid date format. Please use yyyy-MM-dd.";
+      } else {
+          message = "Invalid value for parameter: " + ex.getName();
+      }
+      ErrorResponse error = new ErrorResponse(
+          HttpStatus.BAD_REQUEST.value(),
+          message
+      );
+      return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(Exception.class)

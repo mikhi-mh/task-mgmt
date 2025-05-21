@@ -4,9 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 import javax.validation.Valid;
 import org.mikhi.taskM.model.ApiResponseDto;
+import org.mikhi.taskM.model.Direction;
 import org.mikhi.taskM.model.Status;
 import org.mikhi.taskM.model.Task;
 import org.mikhi.taskM.service.TaskService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -86,6 +91,21 @@ public class TaskController {
     );
     return ResponseEntity.ok(response);
   }
+
+  @GetMapping("/paginated")
+  public ResponseEntity<ApiResponseDto<Page<Task>>> getAllTasksPaginated(
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size,
+      @RequestParam(defaultValue = "dueDate") String sortBy,
+      @RequestParam(defaultValue = "ASC") Direction direction
+  ) {
+    Sort.Direction sortDirection = Sort.Direction.valueOf(direction.name());
+    Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
+    Page<Task> taskPage = taskService.getAllTasks(pageable);
+    ApiResponseDto<Page<Task>> response = new ApiResponseDto<>("Success", taskPage, true);
+    return ResponseEntity.ok(response);
+  }
+
 
   @GetMapping("/filter")
   public ResponseEntity<ApiResponseDto<List<Task>>> filterTasks(

@@ -22,6 +22,10 @@ import org.mikhi.taskM.repository.TaskRepository;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 class TaskServiceImplTest {
 
@@ -175,4 +179,20 @@ class TaskServiceImplTest {
     tasks.forEach(
         task -> assertFalse(task.getDueDate().isAfter(date), "Task date should be after date"));
   }
+
+  @Test
+  void getAllTasks_paginated_success() {
+    List<Task> tasks = Arrays.asList(new Task(), new Task());
+    Pageable pageable = PageRequest.of(0, 2);
+    Page<Task> page = new PageImpl<>(tasks, pageable, tasks.size());
+    when(taskRepository.findAll(pageable)).thenReturn(page);
+
+    Page<Task> result = taskServiceImpl.getAllTasks(pageable);
+
+    assertNotNull(result);
+    assertEquals(2, result.getContent().size());
+    assertEquals(0, result.getNumber());
+    assertEquals(2, result.getSize());
+  }
+
 }

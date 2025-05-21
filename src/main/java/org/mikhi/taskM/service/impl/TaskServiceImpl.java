@@ -10,6 +10,8 @@ import org.mikhi.taskM.model.Status;
 import org.mikhi.taskM.model.Task;
 import org.mikhi.taskM.repository.TaskRepository;
 import org.mikhi.taskM.service.TaskService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +61,11 @@ public class TaskServiceImpl implements TaskService {
       throw new NoTasksFoundException("No tasks found in the system");
     }
     return tasks;
+  }
+
+  @Override
+  public Page<Task> getAllTasks(Pageable pageable) {
+    return taskRepository.findAll(pageable);
   }
 
   @Override

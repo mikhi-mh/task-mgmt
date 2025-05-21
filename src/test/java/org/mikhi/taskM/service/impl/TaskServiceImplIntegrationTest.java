@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mikhi.taskM.exception.NoTasksFoundException;
@@ -18,6 +19,9 @@ import org.mikhi.taskM.repository.TaskRepository;
 import org.mikhi.taskM.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -182,5 +186,25 @@ class TaskServiceImplIntegrationTest {
 
     assertEquals(2, result.size());
     assertTrue(result.stream().noneMatch(t -> t.getDueDate().isAfter(date)));
+  }
+
+  @Test
+  void getAllTasks_paginated_success() {
+    // Save 5 tasks
+    for (int i = 1; i <= 5; i++) {
+      Task task = createTestTask("Task" + i);
+      taskRepository.save(task);
+    }
+
+    Pageable pageable = PageRequest.of(0, 3); // first page, size 3
+    Page<Task> page = taskRepository.findAll(pageable);
+
+    assertEquals(3, page.getContent().size());
+    assertEquals(0, page.getNumber());
+    assertEquals(3, page.getSize());
+    assertEquals(5, page.getTotalElements());
+    assertTrue(page.getContent().stream().anyMatch(t -> t.getTitle().equals("Task1")));
+    IntStream.range(0, page.getContent().size())
+        .forEach(i -> assertEquals("Task" + (i + 1), page.getContent().get(i).getTitle()));
   }
 }
