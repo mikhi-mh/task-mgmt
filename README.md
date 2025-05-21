@@ -1,36 +1,43 @@
 # Task Management API
 
-A simple Task Management REST API built with Spring Boot, JPA, and H2 in-memory database. This project allows you to create, read, update, delete, and filter tasks.
+A simple Task Management REST API built with Spring Boot, JPA, and H2 in-memory database. This project allows you to create, read, update, delete, filter, and paginate tasks.
 
 ## Features
 
-- Create, update, delete, and retrieve tasks
+- Create, update, delete, and retrieve tasks by ID
+- Retrieve all tasks or paginated tasks with sorting
 - Filter tasks by status, due date, or both
-- Retrieve all tasks or tasks due till a specific date
+- Retrieve tasks with due date up to a specific date
 - Input validation and global exception handling
 - In-memory H2 database with sample data
 - Swagger/OpenAPI documentation
 
 ## Tech Stack
 
-- Java
-- Spring Boot
+- Java 11
+- Spring Boot 2.7.5
 - Spring Data JPA
 - H2 Database
 - Maven
-- Swagger/OpenAPI
+- Swagger/OpenAPI (springdoc-openapi-ui)
 
 ## API Endpoints
 
-| Method | Endpoint                  | Description                                 |
-|--------|--------------------------|---------------------------------------------|
-| POST   | `/v1/tasks`              | Create a new task                           |
-| GET    | `/v1/tasks/{id}`         | Get a task by ID                            |
-| PUT    | `/v1/tasks/{id}`         | Update a task by ID                         |
-| DELETE | `/v1/tasks/{id}`         | Delete a task by ID                         |
-| GET    | `/v1/tasks`              | Get all tasks                               |
-| GET    | `/v1/tasks/filter`       | Filter tasks by status and/or due date       |
-| GET    | `/v1/tasks/till-date`    | Get tasks with due date till a specific date|
+| Method | Endpoint                        | Description                                         |
+|--------|---------------------------------|-----------------------------------------------------|
+| POST   | `/v1/tasks`                     | Create a new task                                   |
+| GET    | `/v1/tasks/{id}`                | Get a task by ID                                    |
+| PUT    | `/v1/tasks/{id}`                | Update a task by ID                                 |
+| DELETE | `/v1/tasks/{id}`                | Delete a task by ID                                 |
+| GET    | `/v1/tasks`                     | Get all tasks                                       |
+| GET    | `/v1/tasks/paginated`           | Get paginated and sorted tasks                      |
+| GET    | `/v1/tasks/filter`              | Filter tasks by status and/or due date              |
+| GET    | `/v1/tasks/till-date`           | Get tasks with due date up to a specific date       |
+
+### Filtering and Pagination
+
+- `/v1/tasks/filter?status=TODO&dueDate=2024-06-01` — filter by status and due date (both optional)
+- `/v1/tasks/paginated?page=0&size=10&sortBy=dueDate&direction=ASC` — pagination and sorting
 
 ## Data Model
 
@@ -41,6 +48,11 @@ A simple Task Management REST API built with Spring Boot, JPA, and H2 in-memory 
   - `status`: Enum (`TODO`, `IN_PROGRESS`, `DONE`)
   - `dueDate`: LocalDate
 
+- **ApiResponseDto\<T\>**
+  - `message`: String
+  - `data`: T
+  - `success`: boolean
+
 ## Database
 
 - Uses H2 in-memory database
@@ -49,7 +61,7 @@ A simple Task Management REST API built with Spring Boot, JPA, and H2 in-memory 
 
 ## API Documentation
 
-- Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+- Swagger UI: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 - OpenAPI docs: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
 
 ## How to Run Locally
