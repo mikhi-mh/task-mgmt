@@ -99,6 +99,10 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public List<Task> getTasksTillDate(LocalDate dueDate) {
-    return taskRepository.findByDueDateLessThanEqual(dueDate);
+    List<Task> tasks = taskRepository.findByDueDateLessThanEqual(dueDate);
+    if (tasks.isEmpty()) {
+      throw new NoTasksFoundException(" No tasks found with due date till: " + dueDate);
+    }
+    return tasks;
   }
 }
