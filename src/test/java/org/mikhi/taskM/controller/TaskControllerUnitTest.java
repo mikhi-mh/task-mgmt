@@ -28,7 +28,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 
-class TaskControllerTest {
+/**
+ * Unit test for {@link TaskController} using {@code  @InjectMocks}.
+ * <p>
+ * This test class verifies the controller's method logic in isolation. It mocks the
+ * {@link TaskService} and directly invokes controller methods without initializing the Spring
+ * context or using HTTP simulation.
+ */
+class TaskControllerUnitTest {
 
   @Mock
   private TaskService taskService;

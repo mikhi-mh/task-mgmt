@@ -25,6 +25,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+/**
+ * Full integration test for {@link TaskController}.
+ * <p>
+ * This test loads the full Spring application context using {@code @SpringBootTest} and verifies
+ * the complete flow: Controller -> Service -> Repository. An embedded database (e.g., H2) is used
+ * to persist test data.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 class TaskControllerIntegrationTest {
