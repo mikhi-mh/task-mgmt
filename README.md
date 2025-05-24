@@ -95,3 +95,19 @@ A simple Task Management REST API built with Spring Boot, JPA, and H2 in-memory 
 - JDBC URL: `jdbc:h2:mem:testdb`
 
 ---
+## How to Generate Javadoc / Check docs
+
+1. **Generate Javadoc using Maven**
+   ```sh
+   mvn javadoc:javadoc
+   ```
+2. **Generate Javadoc for a Specific File** :  <br> Run the following command to generate Javadoc for TestController.java :
+   ```sh
+   javadoc -d docs/ src/main/java/org/mikhi/taskM/controller/TestController.java
+   ```
+3. **Output The generated Javadoc will be available in:**
+   `target/site/apidocs/`
+
+4. **View the Javadoc Open the following file in a browser:** `target/site/apidocs/index.html`
+5. **Navigate to your TestController documentation.**
+---
