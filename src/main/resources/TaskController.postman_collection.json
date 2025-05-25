@@ -1,0 +1,132 @@
+{
+  "info": {
+    "name": "TaskController API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Task",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Sample Task\",\n  \"description\": \"Task description\",\n  \"dueDate\": \"2023-12-31\",\n  \"status\": \"IN_PROGRESS\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/v1/tasks",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "tasks"]
+        }
+      }
+    },
+    {
+      "name": "Get Task by ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/v1/tasks/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "tasks", ":id"],
+          "variable": [{ "key": "id", "value": "1" }]
+        }
+      }
+    },
+    {
+      "name": "Update Task",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Updated Task\",\n  \"description\": \"Updated description\",\n  \"dueDate\": \"2024-01-15\",\n  \"status\": \"DONE\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/v1/tasks/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "tasks", ":id"],
+          "variable": [{ "key": "id", "value": "1" }]
+        }
+      }
+    },
+    {
+      "name": "Delete Task",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{baseUrl}}/v1/tasks/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "tasks", ":id"],
+          "variable": [{ "key": "id", "value": "1" }]
+        }
+      }
+    },
+    {
+      "name": "Get All Tasks",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/v1/tasks",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "tasks"]
+        }
+      }
+    },
+    {
+      "name": "Get Paginated Tasks",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/v1/tasks/paginated?page=0&size=10&sortBy=dueDate&direction=ASC",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "tasks", "paginated"],
+          "query": [
+            { "key": "page", "value": "0" },
+            { "key": "size", "value": "10" },
+            { "key": "sortBy", "value": "dueDate" },
+            { "key": "direction", "value": "ASC" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Filter Tasks",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/v1/tasks/filter?status=IN_PROGRESS&dueDate=2023-12-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "tasks", "filter"],
+          "query": [
+            { "key": "status", "value": "IN_PROGRESS" },
+            { "key": "dueDate", "value": "2024-04-15" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Tasks Till Date",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/v1/tasks/till-date?dueDate=2023-12-31",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "tasks", "till-date"],
+          "query": [
+            { "key": "dueDate", "value": "2023-12-31" }
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ]
+}
