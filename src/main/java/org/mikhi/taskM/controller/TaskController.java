@@ -1,5 +1,6 @@
 package org.mikhi.taskM.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import java.time.LocalDate;
 import java.util.List;
 import javax.validation.Valid;
@@ -35,8 +36,8 @@ public class TaskController {
     this.taskService = taskService;
   }
 
-
   @PostMapping
+  @Operation(summary = "Create a new task", description = "Creates a new task and returns the created task details")
   public ResponseEntity<ApiResponseDto<Task>> createTask(@Valid @RequestBody Task task) {
     Task createdTask = taskService.createTask(task);
     ApiResponseDto<Task> response = new ApiResponseDto<>(
@@ -48,6 +49,7 @@ public class TaskController {
   }
 
   @GetMapping("/{id}")
+  @Operation(summary = "Get task by ID", description = "Retrieves the details of a task by its ID")
   public ResponseEntity<ApiResponseDto<Task>> getTaskById(@PathVariable Long id) {
     Task task = taskService.getTaskById(id);
     ApiResponseDto<Task> response = new ApiResponseDto<>(
@@ -59,6 +61,7 @@ public class TaskController {
   }
 
   @PutMapping("/{id}")
+  @Operation(summary = "Update a task by ID", description = "Updates the details of an existing task by its ID")
   public ResponseEntity<ApiResponseDto<Task>> updateTask(@PathVariable Long id,
       @Valid @RequestBody Task task) {
     Task updatedTask = taskService.updateTask(id, task);
@@ -71,6 +74,7 @@ public class TaskController {
   }
 
   @DeleteMapping("/{id}")
+  @Operation(summary = "Delete a task by ID", description = "Deletes a task by its ID and returns a confirmation message")
   public ResponseEntity<ApiResponseDto<String>> deleteTask(@PathVariable Long id) {
     String result = taskService.deleteTask(id);
     ApiResponseDto<String> response = new ApiResponseDto<>(
@@ -82,6 +86,7 @@ public class TaskController {
   }
 
   @GetMapping
+  @Operation(summary = "Get all tasks", description = "Retrieves a list of all tasks")
   public ResponseEntity<ApiResponseDto<List<Task>>> getAllTasks() {
     List<Task> tasks = taskService.getAllTasks();
     ApiResponseDto<List<Task>> response = new ApiResponseDto<>(
@@ -93,6 +98,7 @@ public class TaskController {
   }
 
   @GetMapping("/paginated")
+  @Operation(summary = "Get paginated tasks", description = "Retrieves tasks in a paginated format/page format with sorting options")
   public ResponseEntity<ApiResponseDto<Page<Task>>> getAllTasksPaginated(
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size,
@@ -108,6 +114,7 @@ public class TaskController {
 
 
   @GetMapping("/filter")
+  @Operation(summary = "Filter tasks", description = "Filters tasks based on Status and/or Due-date")
   public ResponseEntity<ApiResponseDto<List<Task>>> filterTasks(
       @RequestParam(required = false) Status status,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dueDate) {
@@ -138,6 +145,7 @@ public class TaskController {
   }
 
   @GetMapping("/till-date")
+  @Operation(summary = "Get tasks till a specific date", description = "Retrieves tasks with a due date up to the specified date")
   public ResponseEntity<ApiResponseDto<List<Task>>> getTasksTillDate(
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dueDate) {
     List<Task> tasks = taskService.getTasksTillDate(dueDate);
