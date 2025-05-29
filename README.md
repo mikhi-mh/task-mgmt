@@ -11,6 +11,7 @@ A simple Task Management REST API built with Spring Boot, JPA, and H2 in-memory 
 - Input validation and global exception handling
 - In-memory H2 database with sample data
 - Swagger/OpenAPI documentation
+- Dockerized application for easy deployment
 
 ## Tech Stack
 
@@ -20,6 +21,7 @@ A simple Task Management REST API built with Spring Boot, JPA, and H2 in-memory 
 - H2 Database
 - Maven
 - Swagger/OpenAPI (springdoc-openapi-ui)
+- Docker
 
 ## API Endpoints
 
@@ -42,16 +44,16 @@ A simple Task Management REST API built with Spring Boot, JPA, and H2 in-memory 
 ## Data Model
 
 - **Task**
-  - `id`: Long (auto-generated)
-  - `title`: String (required)
-  - `description`: String
-  - `status`: Enum (`TODO`, `IN_PROGRESS`, `DONE`)
-  - `dueDate`: LocalDate
+    - `id`: Long (auto-generated)
+    - `title`: String (required)
+    - `description`: String
+    - `status`: Enum (`TODO`, `IN_PROGRESS`, `DONE`)
+    - `dueDate`: LocalDate
 
 - **ApiResponseDto\<T\>**
-  - `message`: String
-  - `data`: T
-  - `success`: boolean
+    - `message`: String
+    - `data`: T
+    - `success`: boolean
 
 ## Database
 
@@ -111,3 +113,34 @@ A simple Task Management REST API built with Spring Boot, JPA, and H2 in-memory 
 4. **View the Javadoc Open the following file in a browser:** `target/site/apidocs/index.html`
 5. **Navigate to your TestController documentation.**
 ---
+
+## Docker Support
+
+The application is now Dockerized (also for easy deployment). Follow the steps below to build and run the Docker container:
+<br>
+(This project comes with a **Dockerfile** to easily build and run the Spring Boot application in a containerized environment.)
+1.  **Create a Dockerfile in root directory**
+    <br> You can refer dockerfile in root dir for details <br> <br>
+2. **Build the Docker image**
+   ```sh
+   docker build -t task-management-api .
+   ```
+   instead of 'task-management-api' , we can use any name
+
+3. **Run the Docker container**
+   ```sh
+   docker run -p 8080:8080 task-management-api
+   ```
+
+4. **Access the API**
+    - API base URL: `http://localhost:8080/v1/tasks`
+    - Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+
+---
+
+## Hosted Application
+
+The application is hosted and accessible at: [mikhi-task-mgmt-java-sp-app](https://mikhi-task-mgmt-java-sp-app.onrender.com/swagger-ui/index.html)
+<br> plain-text-link : https://mikhi-task-mgmt-java-sp-app.onrender.com/swagger-ui/index.html
+<br>
+(a big thanks to [Render](https://render.com/) for providing free hosting )
