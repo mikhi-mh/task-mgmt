@@ -6,7 +6,6 @@ import java.util.List;
 import javax.validation.Valid;
 import org.mikhi.taskM.model.ApiResponseDto;
 import org.mikhi.taskM.model.Direction;
-import org.mikhi.taskM.model.SortField;
 import org.mikhi.taskM.model.Status;
 import org.mikhi.taskM.model.Task;
 import org.mikhi.taskM.service.TaskService;
@@ -103,14 +102,11 @@ public class TaskController {
   public ResponseEntity<ApiResponseDto<Page<Task>>> getAllTasksPaginated(
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size,
-      @RequestParam(defaultValue = "DUE_DATE" ) SortField sortBy,
+      @RequestParam(defaultValue = "dueDate") String sortBy,
       @RequestParam(defaultValue = "ASC") Direction direction
   ) {
-    if (!SortField.isValid(sortBy.getField())) {
-        throw new IllegalArgumentException("Invalid sort field: " + sortBy + ". Allowed fields are: id, title, status, dueDate");
-    }
     Sort.Direction sortDirection = Sort.Direction.valueOf(direction.name());
-    Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy.getField()));
+    Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortBy));
     Page<Task> taskPage = taskService.getAllTasks(pageable);
     ApiResponseDto<Page<Task>> response = new ApiResponseDto<>("Success", taskPage, true);
     return ResponseEntity.ok(response);
