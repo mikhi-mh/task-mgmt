@@ -7,6 +7,12 @@ CREATE TABLE IF NOT EXISTS task (
     due_date    DATE
 );
 
+CREATE TABLE IF NOT EXISTS users (
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_name       VARCHAR(255) NOT NULL,
+    full_name VARCHAR(512)
+    );
+
 
 INSERT INTO task (id, title, description, status, due_date)
 VALUES (1, 'Project Setup', 'Initialize Spring Boot project structure', 'IN_PROGRESS','2024-04-10'),
