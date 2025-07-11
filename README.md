@@ -147,3 +147,5 @@ The application is hosted and accessible at: [mikhi-task-mgmt-java-sp-app](https
 <br>
 > 🕒 Note: This project is hosted on Render's free tier. It may take up to 30 seconds to load after periods of inactivity. 
 <br> A [background ping](https://cron-job.org/) keeps it active most of the time.
+<br>
+> P.S. This project stays online thanks to [UptimeRobot](https://uptimerobot.com/), which pings the site every few minutes. I'm currently using the free tier to keep it running.
